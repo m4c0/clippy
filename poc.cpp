@@ -32,23 +32,6 @@ static void log(jute::view msg) {
 
 static bool autoclippers() { return g_autoclip_cost != 0; }
 
-static void draw() {
-  putln("\e[1J");
-  for (auto msg: g_term) putln(msg);
-  putln();
-  putln("Paperclips:   ", g_paperclips);
-  putln("Wire:         ", g_wire, " units");
-  putln("Funds:        ", g_funds, " dindins");
-  putln("Autoclippers: ", g_autoclips);
-  putln();
-  putln("Cost of a paperclip box: ", g_cost_per_box);
-  putln("Cost of a wire spool:    ", g_cost_per_spool);
-  putln();
-  putln("Press P to create a paperclip");
-  putln("Press W to buy a wire spool");
-  if (autoclippers()) putln("Press A to buy an autoclipper");
-}
-
 static void sell() {
   if (g_paperclips < g_clips_per_box) return;
   if (rng::rand(100) < g_demand) return;
@@ -84,8 +67,24 @@ static void process(char input) {
 }
 
 static int input() {
-  int res = getch();
-  return res;
+  return getch();
+}
+
+static void draw() {
+  putln("\e[1J");
+  for (auto msg: g_term) putln(msg);
+  putln();
+  putln("Paperclips:   ", g_paperclips);
+  putln("Wire:         ", g_wire, " units");
+  putln("Funds:        ", g_funds, " dindins");
+  putln("Autoclippers: ", g_autoclips);
+  putln();
+  putln("Cost of a paperclip box: ", g_cost_per_box);
+  putln("Cost of a wire spool:    ", g_cost_per_spool);
+  putln();
+  putln("Press P to create a paperclip");
+  putln("Press W to buy a wire spool");
+  if (autoclippers()) putln("Press A to buy an autoclipper");
 }
 
 static void cycle() {

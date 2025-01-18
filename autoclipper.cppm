@@ -15,14 +15,14 @@ namespace autoclipper {
 
 module :private;
 
-static constexpr const numba g_autoclip_min_funds = 500;
+static constexpr const numba g_base_cost = 500;
 
-static numba g_autoclips = 0;
-static numba g_cost_per_autoclip = 0; // TODO: exponent
+static numba g_count = 0;
+static bool g_enabled = false;
 
 numba autoclipper::buy(numba funds) {
   if (!can_buy(funds)) return 0;
-  g_autoclips++;
+  g_count++;
   return cost();
 }
 
@@ -34,15 +34,17 @@ bool autoclipper::can_buy(numba funds) {
 
 void autoclipper::check(numba funds) {
   if (enabled()) return;
-  if (funds < g_autoclip_min_funds) return;
-  g_cost_per_autoclip = g_autoclip_min_funds;
+  if (funds < g_base_cost) return;
+  g_enabled = true;
   log("Autoclippers enabled");
 }
 
-numba autoclipper::cost() { return g_cost_per_autoclip; }
+numba autoclipper::cost() {
+  return g_base_cost * dotz::pow(1.1, g_count);
+}
 
-numba autoclipper::count() { return g_autoclips; }
+numba autoclipper::count() { return g_count; }
 
-bool autoclipper::enabled() { return g_cost_per_autoclip != 0; }
+bool autoclipper::enabled() { return g_enabled; }
 
-numba autoclipper::run(numba wire) { return dotz::min(wire, g_autoclips); }
+numba autoclipper::run(numba wire) { return dotz::min(wire, g_count); }

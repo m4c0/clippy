@@ -10,7 +10,7 @@ static numba g_wire_spool = 1000;
 static numba g_clips_per_box = 1;
 static numba g_cost_per_box = 25;
 static numba g_cost_per_spool = 1500;
-static numba g_autoclip_cost = 0;
+static numba g_cost_per_autoclip = 0;
 static numba g_demand = 32;
 
 static numba g_paperclips = 0;
@@ -30,7 +30,7 @@ static void log(jute::view msg) {
   g_term[g_term_len - 1] = msg;
 }
 
-static bool autoclippers() { return g_autoclip_cost != 0; }
+static bool autoclips() { return g_cost_per_autoclip != 0; }
 
 static void sell() {
   if (g_paperclips < g_clips_per_box) return;
@@ -38,8 +38,8 @@ static void sell() {
   g_paperclips -= g_clips_per_box;
   g_funds += g_cost_per_box;
 
-  if (!autoclippers() && g_funds > g_autoclip_min_funds) {
-    g_autoclip_cost = g_autoclip_min_funds;
+  if (!autoclips() && g_funds > g_autoclip_min_funds) {
+    g_cost_per_autoclip = g_autoclip_min_funds;
     log("Autoclippers enabled");
   }
 }
@@ -56,12 +56,20 @@ static void buy_spool() {
   g_funds -= g_cost_per_spool;
 }
 
+static void buy_autoclip() {
+  if (!autoclips()) return;
+  if (g_funds < g_cost_per_autoclip) return log("Not enough dindins");
+  g_autoclips++;
+  g_funds -= g_cost_per_autoclip;
+}
+
 static void tick() {
   sell();
 }
 
 static void input() {
   switch (getch()) {
+    case 'a': buy_autoclip(); break;
     case 'p': make_paperclip(); break;
     case 'w': buy_spool(); break;
     default:  break;
@@ -82,7 +90,7 @@ static void draw() {
   putln();
   putln("Press P to create a paperclip");
   putln("Press W to buy a wire spool");
-  if (autoclippers()) putln("Press A to buy an autoclipper");
+  if (autoclips()) putln("Press A to buy an autoclipper");
 }
 
 static void cycle() {

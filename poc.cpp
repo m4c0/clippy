@@ -1,5 +1,6 @@
 #pragma leco tool
 import getch;
+import jute;
 import print;
 import rng;
 
@@ -19,9 +20,21 @@ static numba g_autoclips = 0;
 
 static numba g_autoclip_min_funds = 500;
 
+static constexpr const auto g_term_len = 5;
+static jute::view g_term[g_term_len] {};
+
+static void log(jute::view msg) {
+  for (auto i = 1; i < g_term_len; i++) {
+    g_term[i - 1] = g_term[i];
+  }
+  g_term[g_term_len - 1] = msg;
+}
+
 static bool autoclippers() { return g_autoclip_cost != 0; }
 
 static void draw() {
+  putln("\e[1J");
+  for (auto msg: g_term) putln(msg);
   putln();
   putln("Paperclips:   ", g_paperclips);
   putln("Wire:         ", g_wire, " units");
@@ -33,9 +46,7 @@ static void draw() {
   putln();
   putln("Press P to create a paperclip");
   putln("Press W to buy a wire spool");
-  if (autoclippers()) {
-    putln("Press A to buy an autoclipper");
-  }
+  if (autoclippers()) putln("Press A to buy an autoclipper");
 }
 
 static void sell() {
@@ -46,18 +57,18 @@ static void sell() {
 
   if (!autoclippers() && g_funds > g_autoclip_min_funds) {
     g_autoclip_cost = g_autoclip_min_funds;
-    putln("Autoclippers enabled");
+    log("Autoclippers enabled");
   }
 }
 
 static void make_paperclip() {
-  if (g_wire == 0) return putln("Not enought wire");
+  if (g_wire == 0) return log("Not enought wire");
   g_wire--;
   g_paperclips++;
 }
 
 static void buy_spool() {
-  if (g_funds < g_cost_per_box) return putln("Not enough dindins");
+  if (g_funds < g_cost_per_box) return log("Not enough dindins");
   g_wire += g_wire_spool;
   g_funds -= g_cost_per_box;
 }
@@ -74,7 +85,6 @@ static void process(char input) {
 
 static int input() {
   int res = getch();
-  putln("\e[1J");
   return res;
 }
 

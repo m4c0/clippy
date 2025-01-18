@@ -23,12 +23,12 @@ static numba g_cost_per_autoclip = 0; // TODO: exponent
 numba autoclipper::buy(numba funds) {
   if (!can_buy(funds)) return 0;
   g_autoclips++;
-  return g_cost_per_autoclip;
+  return cost();
 }
 
 bool autoclipper::can_buy(numba funds) {
   if (!enabled()) return false;
-  if (funds < g_cost_per_autoclip) return false;
+  if (funds < cost()) return false;
   return true;
 }
 

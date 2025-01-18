@@ -5,15 +5,24 @@ import print;
 
 static int g_paperclips;
 
-static void cycle() {
-  putln("Press P to create a paperclip");
-  if (getch() != 'p') return;
-
-  g_paperclips++;
-
+static void draw() {
   putln();
   putln(g_paperclips, " paperclips");
-  putln();
+  putln("Press P to create a paperclip");
+}
+
+static void process(char input) {
+  switch (input) {
+    case 'p':
+      g_paperclips++;
+      break;
+    default: break;
+  }
+}
+
+static void cycle() {
+  draw();
+  process(getch());
 }
 
 int main() {

@@ -1,4 +1,5 @@
 #pragma leco tool
+import dotz;
 import getch;
 import jute;
 import print;
@@ -44,6 +45,13 @@ static void sell() {
   }
 }
 
+static void autoclip() {
+  if (!autoclips()) return;
+  auto n = dotz::min(g_wire, g_autoclips);
+  g_wire -= n;
+  g_paperclips += n;
+}
+
 static void make_paperclip() {
   if (g_wire == 0) return log("Not enought wire");
   g_wire--;
@@ -65,6 +73,7 @@ static void buy_autoclip() {
 
 static void tick() {
   sell();
+  autoclip();
 }
 
 static void input() {

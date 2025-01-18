@@ -92,7 +92,7 @@ static void draw() {
   putln("Paperclips:   ", g_paperclips);
   putln("Wire:         ", g_wire, " units");
   putln("Funds:        ", g_funds, " dindins");
-  putln("Autoclippers: ", g_autoclips);
+  if (autoclips()) putln("Autoclippers: ", g_autoclips);
   putln();
   putln("Costs of:");
   putln("* Paperclip box: ", g_cost_per_box);

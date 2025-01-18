@@ -56,18 +56,16 @@ static void buy_spool() {
   g_funds -= g_cost_per_spool;
 }
 
-static void process(char input) {
+static void tick() {
   sell();
+}
 
-  switch (input) {
+static void input() {
+  switch (getch()) {
     case 'p': make_paperclip(); break;
     case 'w': buy_spool(); break;
     default:  break;
   }
-}
-
-static int input() {
-  return getch();
 }
 
 static void draw() {
@@ -89,7 +87,8 @@ static void draw() {
 
 static void cycle() {
   draw();
-  process(input());
+  tick();
+  input();
 }
 
 int main() {

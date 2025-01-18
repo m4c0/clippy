@@ -51,9 +51,9 @@ static void make_paperclip() {
 }
 
 static void buy_spool() {
-  if (g_funds < g_cost_per_box) return log("Not enough dindins");
+  if (g_funds < g_cost_per_spool) return log("Not enough dindins");
   g_wire += g_wire_spool;
-  g_funds -= g_cost_per_box;
+  g_funds -= g_cost_per_spool;
 }
 
 static void process(char input) {

@@ -2,6 +2,7 @@ export module autoclipper;
 import dotz;
 import log;
 import numba;
+import save;
 
 namespace autoclipper {
   export bool can_buy(numba funds);
@@ -10,7 +11,9 @@ namespace autoclipper {
   export numba cost();
   export numba count();
   export bool enabled();
+  export void load(savefile * f);
   export numba run(numba wire);
+  export void save(savefile * f);
 }
 
 module :private;
@@ -47,4 +50,14 @@ numba autoclipper::count() { return g_count; }
 
 bool autoclipper::enabled() { return g_enabled; }
 
+void autoclipper::load(savefile * f) {
+  f->read(&g_count);
+  f->read(&g_enabled);
+}
+
 numba autoclipper::run(numba wire) { return dotz::min(wire, g_count); }
+
+void autoclipper::save(savefile * f) {
+  f->write(&g_count);
+  f->write(&g_enabled);
+}

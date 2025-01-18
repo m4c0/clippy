@@ -5,6 +5,7 @@ import getch;
 import log;
 import print;
 import rng;
+import save;
 
 typedef unsigned long numba;
 
@@ -82,12 +83,42 @@ static void draw() {
   if (autoclipper::can_buy(g_funds)) putln("Press A to buy an autoclipper");
 }
 
+static void load() {
+  auto f = savefile::load();
+  autoclipper::load(&f);
+
+  f.read(&g_wire_spool);
+  f.read(&g_clips_per_box);
+  f.read(&g_cost_per_box);
+  f.read(&g_cost_per_spool);
+  f.read(&g_demand);
+  f.read(&g_paperclips);
+  f.read(&g_wire);
+  f.read(&g_funds);
+}
+
+static void save() {
+  auto f = savefile::save();
+  autoclipper::save(&f);
+
+  f.write(&g_wire_spool);
+  f.write(&g_clips_per_box);
+  f.write(&g_cost_per_box);
+  f.write(&g_cost_per_spool);
+  f.write(&g_demand);
+  f.write(&g_paperclips);
+  f.write(&g_wire);
+  f.write(&g_funds);
+}
+
 static void cycle() {
   draw();
   tick();
+  save();
   input();
 }
 
 int main() {
+  load();
   while (true) cycle(); 
 }

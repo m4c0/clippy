@@ -94,8 +94,10 @@ static void draw() {
   putln("Funds:        ", g_funds, " dindins");
   putln("Autoclippers: ", g_autoclips);
   putln();
-  putln("Cost of a paperclip box: ", g_cost_per_box);
-  putln("Cost of a wire spool:    ", g_cost_per_spool);
+  putln("Costs of:");
+  putln("* Paperclip box: ", g_cost_per_box);
+  putln("* Wire spool:    ", g_cost_per_spool);
+  if (autoclips()) putln("* Autoclipper:   ", g_cost_per_autoclip);
   putln();
   putln("Press P to create a paperclip");
   putln("Press W to buy a wire spool");

@@ -1,7 +1,8 @@
 #pragma leco tool
+import autoclipper;
 import dotz;
 import getch;
-import jute;
+import log;
 import print;
 import rng;
 
@@ -11,27 +12,11 @@ static numba g_wire_spool = 1000;
 static numba g_clips_per_box = 1;
 static numba g_cost_per_box = 25;
 static numba g_cost_per_spool = 1500;
-static numba g_cost_per_autoclip = 0;
 static numba g_demand = 32;
 
 static numba g_paperclips = 0;
 static numba g_wire = g_wire_spool;
 static numba g_funds = 0;
-static numba g_autoclips = 0;
-
-static numba g_autoclip_min_funds = 500;
-
-static constexpr const auto g_term_len = 5;
-static jute::view g_term[g_term_len] {};
-
-static void log(jute::view msg) {
-  for (auto i = 1; i < g_term_len; i++) {
-    g_term[i - 1] = g_term[i];
-  }
-  g_term[g_term_len - 1] = msg;
-}
-
-static bool autoclips() { return g_cost_per_autoclip != 0; }
 
 static void sell() {
   if (g_paperclips < g_clips_per_box) return;
@@ -39,15 +24,11 @@ static void sell() {
   g_paperclips -= g_clips_per_box;
   g_funds += g_cost_per_box;
 
-  if (!autoclips() && g_funds > g_autoclip_min_funds) {
-    g_cost_per_autoclip = g_autoclip_min_funds;
-    log("Autoclippers enabled");
-  }
+  autoclipper::check(g_funds);
 }
 
 static void autoclip() {
-  if (!autoclips()) return;
-  auto n = dotz::min(g_wire, g_autoclips);
+  auto n = autoclipper::run(g_wire);
   g_wire -= n;
   g_paperclips += n;
 }
@@ -65,10 +46,7 @@ static void buy_spool() {
 }
 
 static void buy_autoclip() {
-  if (!autoclips()) return;
-  if (g_funds < g_cost_per_autoclip) return;
-  g_autoclips++;
-  g_funds -= g_cost_per_autoclip;
+  g_funds -= autoclipper::buy(g_funds);
 }
 
 static void tick() {
@@ -87,21 +65,21 @@ static void input() {
 
 static void draw() {
   putln("\e[1J");
-  for (auto msg: g_term) putln(msg);
+  log_print();
   putln();
   putln("Paperclips:   ", g_paperclips);
   putln("Wire:         ", g_wire, " units");
   putln("Funds:        ", g_funds, " dindins");
-  if (autoclips()) putln("Autoclippers: ", g_autoclips);
+  if (autoclipper::enabled()) putln("Autoclippers: ", autoclipper::count());
   putln();
   putln("Costs of:");
   putln("* Paperclip box: ", g_cost_per_box);
   putln("* Wire spool:    ", g_cost_per_spool);
-  if (autoclips()) putln("* Autoclipper:   ", g_cost_per_autoclip);
+  if (autoclipper::enabled()) putln("* Autoclipper:   ", autoclipper::cost());
   putln();
   if (g_wire) putln("Press P to create a paperclip");
   if (g_funds > g_cost_per_spool) putln("Press W to buy a wire spool");
-  if (autoclips() && g_funds > g_cost_per_autoclip) putln("Press A to buy an autoclipper");
+  if (autoclipper::can_buy(g_funds)) putln("Press A to buy an autoclipper");
 }
 
 static void cycle() {

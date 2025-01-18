@@ -5,7 +5,7 @@ import jute;
 import print;
 import rng;
 
-typedef int numba;
+typedef unsigned long numba;
 
 static numba g_wire_spool = 1000;
 static numba g_clips_per_box = 1;

@@ -53,20 +53,20 @@ static void autoclip() {
 }
 
 static void make_paperclip() {
-  if (g_wire == 0) return log("Not enought wire");
+  if (g_wire == 0) return;
   g_wire--;
   g_paperclips++;
 }
 
 static void buy_spool() {
-  if (g_funds < g_cost_per_spool) return log("Not enough dindins");
+  if (g_funds < g_cost_per_spool) return;
   g_wire += g_wire_spool;
   g_funds -= g_cost_per_spool;
 }
 
 static void buy_autoclip() {
   if (!autoclips()) return;
-  if (g_funds < g_cost_per_autoclip) return log("Not enough dindins");
+  if (g_funds < g_cost_per_autoclip) return;
   g_autoclips++;
   g_funds -= g_cost_per_autoclip;
 }
@@ -99,9 +99,9 @@ static void draw() {
   putln("* Wire spool:    ", g_cost_per_spool);
   if (autoclips()) putln("* Autoclipper:   ", g_cost_per_autoclip);
   putln();
-  putln("Press P to create a paperclip");
-  putln("Press W to buy a wire spool");
-  if (autoclips()) putln("Press A to buy an autoclipper");
+  if (g_wire) putln("Press P to create a paperclip");
+  if (g_funds > g_cost_per_spool) putln("Press W to buy a wire spool");
+  if (autoclips() && g_funds > g_cost_per_autoclip) putln("Press A to buy an autoclipper");
 }
 
 static void cycle() {

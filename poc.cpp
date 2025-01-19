@@ -9,6 +9,8 @@ import save;
 
 typedef unsigned long numba;
 
+struct quit {};
+
 static numba g_wire_spool = 1000;
 static numba g_clips_per_box = 1;
 static numba g_cost_per_box = 25;
@@ -60,6 +62,7 @@ static void input() {
     case 'a': buy_autoclip(); break;
     case 'p': make_paperclip(); break;
     case 'w': buy_spool(); break;
+    case 'q': throw quit {};
     default:  break;
   }
 }
@@ -78,6 +81,7 @@ static void draw() {
   putln("* Wire spool:    ", g_cost_per_spool);
   if (autoclipper::enabled()) putln("* Autoclipper:   ", autoclipper::cost());
   putln();
+  putln("Press Q to quit");
   if (g_wire) putln("Press P to create a paperclip");
   if (g_funds > g_cost_per_spool) putln("Press W to buy a wire spool");
   if (autoclipper::can_buy(g_funds)) putln("Press A to buy an autoclipper");
@@ -118,7 +122,8 @@ static void cycle() {
   input();
 }
 
-int main() {
+int main() try {
   load();
   while (true) cycle(); 
+} catch (quit) {
 }

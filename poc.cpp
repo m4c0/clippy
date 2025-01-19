@@ -3,11 +3,10 @@ import autoclipper;
 import dotz;
 import getch;
 import log;
+import numba;
 import print;
 import rng;
 import save;
-
-typedef unsigned long numba;
 
 struct quit {};
 

@@ -11,7 +11,6 @@ import save;
 struct quit {};
 
 static numba g_wire_spool = 1000;
-static numba g_clips_per_box = 1;
 static numba g_cost_per_box = 25;
 static numba g_cost_per_spool = 1500;
 static numba g_demand = 32;
@@ -21,9 +20,9 @@ static numba g_wire = g_wire_spool;
 static numba g_funds = 0;
 
 static void sell() {
-  if (g_paperclips < g_clips_per_box) return;
+  if (g_paperclips == 0) return;
   if (rng::rand(100) < g_demand) return;
-  g_paperclips -= g_clips_per_box;
+  g_paperclips -= 1;
   g_funds += g_cost_per_box;
 
   autoclipper::check(g_funds);
@@ -91,7 +90,6 @@ static void load() {
   autoclipper::load(&f);
 
   f.read(&g_wire_spool);
-  f.read(&g_clips_per_box);
   f.read(&g_cost_per_box);
   f.read(&g_cost_per_spool);
   f.read(&g_demand);
@@ -105,7 +103,6 @@ static void save() {
   autoclipper::save(&f);
 
   f.write(&g_wire_spool);
-  f.write(&g_clips_per_box);
   f.write(&g_cost_per_box);
   f.write(&g_cost_per_spool);
   f.write(&g_demand);

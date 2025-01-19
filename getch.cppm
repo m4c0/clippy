@@ -1,6 +1,7 @@
 module;
 #if LECO_TARGET_WINDOWS
-#include <conio.h>
+// If we include <conio.h>, we can't define a symbol named getch
+extern "C" int _getch();
 #else
 #include <stdio.h>
 #include <termios.h>

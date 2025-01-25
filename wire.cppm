@@ -29,6 +29,9 @@ numba wire::stock() { return g_wire; }
 void wire::cut(numba n) { g_wire -= n; }
 
 numba wire::cost() {
+  // TODO: 1/8 chance of price actually changing every tenth of a second
+  // TODO: decrease price by price/1000th every 25s if wire not bought in last 25s
+  // TODO: increase price by $0.02 for every buy
   numba increase = price_ampliture * (dotz::cos(g_cost_ticker) * -0.5 + 0.5);
   increase -= increase % 100;
   return g_cost_per_spool + increase;

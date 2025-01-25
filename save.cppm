@@ -3,6 +3,7 @@ module;
 
 export module save;
 import no;
+import sysstd;
 
 export class savefile : no::no {
   FILE * m_file;
@@ -18,6 +19,6 @@ public:
   template<typename T>
   void write(T * t) { fwrite(t, 1, sizeof(T), m_file); }
 
-  static savefile load() { return { fopen("out/save", "rb") }; }
-  static savefile save() { return { fopen("out/save", "wb") }; }
+  static savefile load() { return { sysstd::fopen("out/save", "rb") }; }
+  static savefile save() { return { sysstd::fopen("out/save", "wb") }; }
 };

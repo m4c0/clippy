@@ -49,6 +49,7 @@ static void buy_autoclip() {
 static void tick() {
   sell();
   autoclip();
+  wire::update_cost();
 }
 
 static void input() {

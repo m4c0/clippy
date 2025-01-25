@@ -11,7 +11,7 @@ export class savefile : no::no {
   savefile(FILE * f) : m_file { f } {}
 
 public:
-  ~savefile() { fclose(m_file); }
+  ~savefile() { if (m_file) fclose(m_file); }
 
   template<typename T>
   void read(T * t) { if (m_file) fread(t, 1, sizeof(T), m_file); }

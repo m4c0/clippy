@@ -43,8 +43,10 @@ void wire::update_cost() {
 
 numba wire::buy(numba funds) {
   if (funds < g_cost_per_spool) return 0;
+  auto c = cost();
   g_wire += g_wire_spool;
-  return g_cost_per_spool;
+  g_cost_per_spool += 2;
+  return c;
 }
 
 void wire::load(savefile * f) {

@@ -24,9 +24,10 @@ static numba g_count = 0;
 static bool g_enabled = false;
 
 numba autoclipper::buy(numba funds) {
+  auto c = cost();
   if (!can_buy(funds)) return 0;
   g_count++;
-  return cost();
+  return c;
 }
 
 bool autoclipper::can_buy(numba funds) {

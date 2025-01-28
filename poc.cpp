@@ -38,10 +38,17 @@ static void make_paperclip() {
   g_paperclips++;
 }
 
+// TODO: transactions?
+// Both purchase methods rely on this pattern:
+// 1. Calculate cost
+// 2. Check if funds > cost
+// 3. Increase stock
+// 4. Deduce funds based on cost at 1
+// Mainly due to cost being a function of stock. Next features might have the
+// same pattern, therefore, the same chance for overflowing.
 static void buy_spool() {
   g_funds -= wire::buy(g_funds);
 }
-
 static void buy_autoclip() {
   g_funds -= autoclipper::buy(g_funds);
 }

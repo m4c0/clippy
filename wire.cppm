@@ -4,7 +4,7 @@ import numba;
 import save;
 
 export namespace wire {
-  numba buy(numba funds);
+  void buy();
   bool can_buy(numba n);
   numba cost();
   void cut(numba n);
@@ -45,13 +45,10 @@ void wire::update_cost() {
   g_cost_ticker += 0.01;
 }
 
-numba wire::buy(numba funds) {
-  auto c = cost();
-  if (funds < c) return 0;
+void wire::buy() {
   g_wire += g_wire_spool;
   g_cost_per_spool += 2;
   g_market_timer = 25;
-  return c;
 }
 
 void wire::load(savefile * f) {

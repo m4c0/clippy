@@ -6,7 +6,7 @@ import save;
 
 namespace autoclipper {
   export bool can_buy(numba funds);
-  export numba buy(numba funds);
+  export void buy();
   export void check(numba funds);
   export numba cost();
   export numba count();
@@ -23,12 +23,7 @@ static constexpr const numba g_base_cost = 500;
 static numba g_count = 0;
 static bool g_enabled = false;
 
-numba autoclipper::buy(numba funds) {
-  auto c = cost();
-  if (!can_buy(funds)) return 0;
-  g_count++;
-  return c;
-}
+void autoclipper::buy() { g_count++; }
 
 bool autoclipper::can_buy(numba funds) {
   if (!enabled()) return false;

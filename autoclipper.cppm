@@ -20,10 +20,12 @@ module :private;
 
 static constexpr const numba g_base_cost = 500;
 
-static numba g_count = 0;
-static bool g_enabled = false;
+static struct {
+  numba count   = 0;
+  bool  enabled = false;
+} g;
 
-void autoclipper::buy() { g_count++; }
+void autoclipper::buy() { g.count++; }
 
 bool autoclipper::can_buy(numba funds) {
   if (!enabled()) return false;
@@ -34,26 +36,20 @@ bool autoclipper::can_buy(numba funds) {
 void autoclipper::check(numba funds) {
   if (enabled()) return;
   if (funds < g_base_cost) return;
-  g_enabled = true;
+  g.enabled = true;
   log("Autoclippers enabled");
 }
 
 numba autoclipper::cost() {
-  return g_base_cost * dotz::pow(1.1, g_count);
+  return g_base_cost * dotz::pow(1.1, g.count);
 }
 
-numba autoclipper::count() { return g_count; }
+numba autoclipper::count() { return g.count; }
 
-bool autoclipper::enabled() { return g_enabled; }
+bool autoclipper::enabled() { return g.enabled; }
 
-void autoclipper::load(savefile * f) {
-  f->read(&g_count);
-  f->read(&g_enabled);
-}
+void autoclipper::load(savefile * f) { f->read(&g); }
 
-numba autoclipper::run(numba wire) { return dotz::min(wire, g_count); }
+numba autoclipper::run(numba wire) { return dotz::min(wire, g.count); }
 
-void autoclipper::save(savefile * f) {
-  f->write(&g_count);
-  f->write(&g_enabled);
-}
+void autoclipper::save(savefile * f) { f->write(&g); }

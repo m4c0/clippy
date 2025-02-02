@@ -55,11 +55,13 @@ void wire::load(savefile * f) {
   f->read(&g_wire_spool);
   f->read(&g_cost_per_spool);
   f->read(&g_cost_ticker);
+  f->read(&g_market_timer);
   f->read(&g_wire);
 }
 void wire::save(savefile * f) {
   f->write(&g_wire_spool);
   f->write(&g_cost_per_spool);
   f->write(&g_cost_ticker);
+  f->write(&g_market_timer);
   f->write(&g_wire);
 }

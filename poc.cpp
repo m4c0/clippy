@@ -12,14 +12,12 @@ import wire;
 
 struct quit {};
 
-static numba g_demand = 32;
-
 static numba g_paperclips = 0;
 static numba g_funds = 0;
 
 static void sell() {
   if (g_paperclips == 0) return;
-  if (rng::rand(100) < g_demand) return;
+  if (rng::rand(100) > demand::public_demand()) return;
   g_paperclips -= 1;
   g_funds += demand::price();
 

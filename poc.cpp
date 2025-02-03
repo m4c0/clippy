@@ -68,7 +68,7 @@ static void input() {
 }
 
 static void draw() {
-  putln("\e[1J");
+  putln("\e[1J\e[H");
   log_print();
   putln();
   putln("Paperclips:      ", g_paperclips);

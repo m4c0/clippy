@@ -1,5 +1,6 @@
 #pragma leco tool
 import autoclipper;
+import demand;
 import dotz;
 import getch;
 import log;
@@ -68,13 +69,18 @@ static void input() {
 }
 
 static void draw() {
+  auto dem = static_cast<int>(demand::public_demand() * 100);
+
   putln("\e[1J");
   log_print();
   putln();
-  putln("Paperclips:   ", g_paperclips);
-  putln("Wire:         ", wire::stock(), " units");
-  putln("Funds:        ", g_funds, " dindins");
-  if (autoclipper::enabled()) putln("Autoclippers: ", autoclipper::count());
+  putln("Paperclips:      ", g_paperclips);
+  putln("Wire:            ", wire::stock(), " units");
+  putln("Funds:           ", g_funds, " dindins");
+  putln("Public demand:   ", dem, "%");
+  if (autoclipper::enabled()) putln("Autoclippers:    ", autoclipper::count());
+  putln();
+  putln("Paperclip price: ", g_cost_per_box);
   putln();
   putln("Costs of:");
   putln("* Paperclip box: ", g_cost_per_box);

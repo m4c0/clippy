@@ -12,7 +12,6 @@ namespace autoclipper {
   export numba count();
   export bool enabled();
   export void load(savefile * f);
-  export numba run(numba wire);
   export void save(savefile * f);
 }
 
@@ -49,7 +48,5 @@ numba autoclipper::count() { return g.count; }
 bool autoclipper::enabled() { return g.enabled; }
 
 void autoclipper::load(savefile * f) { f->read(&g); }
-
-numba autoclipper::run(numba wire) { return dotz::min(wire, g.count); }
 
 void autoclipper::save(savefile * f) { f->write(&g); }

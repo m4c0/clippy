@@ -25,7 +25,7 @@ static void sell() {
 }
 
 static void autoclip() {
-  auto n = autoclipper::run(wire::stock());
+  auto n = dotz::min(wire::stock(), autoclipper::count());
   wire::cut(n);
   g_paperclips += n;
 }

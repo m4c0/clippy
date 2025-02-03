@@ -68,15 +68,14 @@ static void input() {
 }
 
 static void draw() {
-  auto dem = static_cast<int>(demand::public_demand() * 100);
-
   putln("\e[1J");
   log_print();
   putln();
   putln("Paperclips:      ", g_paperclips);
   putln("Wire:            ", wire::stock(), " units");
   putln("Funds:           ", g_funds, " dindins");
-  putln("Public demand:   ", dem, "%");
+  putln("Public demand:   ", demand::public_demand(), "%");
+  putln("Avg clips/s:     ", demand::avg_cps());
   if (autoclipper::enabled()) putln("Autoclippers:    ", autoclipper::count());
   putln();
   putln("Paperclip price: ", demand::price());

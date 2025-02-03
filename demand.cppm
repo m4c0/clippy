@@ -4,6 +4,7 @@ import save;
 
 export namespace demand {
   unsigned avg_cps();
+  unsigned box_size();
   unsigned mkt_cost();
   unsigned mkt_level();
   unsigned public_demand();
@@ -47,6 +48,10 @@ unsigned demand::avg_cps() {
   // min(1, PD/100) * 7 * PD^1.15
   float pd = ::pd();
   return dotz::round(dotz::min(1.0, pd / 100.0) * 7.0 * dotz::pow(pd, 1.15));
+}
+unsigned demand::box_size() {
+  float pd = ::pd();
+  return dotz::floor(0.7 * dotz::pow(pd, 1.15));
 }
 
 void demand::load(savefile * f) { f->read(&g);  }

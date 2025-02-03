@@ -18,8 +18,10 @@ static numba g_funds = 0;
 static void sell() {
   if (g_paperclips == 0) return;
   if (rng::rand(100) > demand::public_demand()) return;
-  g_paperclips -= 1;
-  g_funds += demand::price();
+
+  auto n = dotz::min(g_paperclips, demand::box_size());
+  g_paperclips -= n;
+  g_funds += n * demand::price();
 
   autoclipper::check(g_funds);
 }

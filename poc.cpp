@@ -84,6 +84,7 @@ static void draw() {
   putln("Costs of:");
   putln("* Wire spool:    ", wire::cost());
   if (autoclipper::enabled()) putln("* Autoclipper:   ", autoclipper::cost());
+  putln("* Mkt upgrade:   ", demand::mkt_cost());
   putln();
   putln("Press Q to quit");
   putln("Press +/- to change price");

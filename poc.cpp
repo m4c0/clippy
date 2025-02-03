@@ -83,7 +83,7 @@ static void draw() {
   putln();
   putln("Press Q to quit");
   if (wire::stock()) putln("Press P to create a paperclip");
-  if (wire::can_buy(g_funds)) putln("Press W to buy a wire spool");
+  if (g_funds >= wire::cost()) putln("Press W to buy a wire spool");
   if (autoclipper::can_buy(g_funds)) putln("Press A to buy an autoclipper");
 }
 

@@ -5,7 +5,6 @@ import save;
 
 export namespace wire {
   void buy();
-  bool can_buy(numba n);
   numba cost();
   void cut(numba n);
   void load(savefile * f);
@@ -27,7 +26,6 @@ static struct {
   numba wire = wire_spool;
 } g;
 
-bool wire::can_buy(numba funds) { return funds >= g.cost_per_spool; }
 numba wire::stock() { return g.wire; }
 void wire::cut(numba n) { g.wire -= n; }
 

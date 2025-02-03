@@ -12,7 +12,6 @@ import wire;
 
 struct quit {};
 
-static numba g_cost_per_box = 25;
 static numba g_demand = 32;
 
 static numba g_paperclips = 0;
@@ -22,7 +21,7 @@ static void sell() {
   if (g_paperclips == 0) return;
   if (rng::rand(100) < g_demand) return;
   g_paperclips -= 1;
-  g_funds += g_cost_per_box;
+  g_funds += demand::price();
 
   autoclipper::check(g_funds);
 }
@@ -80,10 +79,9 @@ static void draw() {
   putln("Public demand:   ", dem, "%");
   if (autoclipper::enabled()) putln("Autoclippers:    ", autoclipper::count());
   putln();
-  putln("Paperclip price: ", g_cost_per_box);
+  putln("Paperclip price: ", demand::price());
   putln();
   putln("Costs of:");
-  putln("* Paperclip box: ", g_cost_per_box);
   putln("* Wire spool:    ", wire::cost());
   if (autoclipper::enabled()) putln("* Autoclipper:   ", autoclipper::cost());
   putln();
@@ -96,10 +94,9 @@ static void draw() {
 static void load() {
   auto f = savefile::load();
   autoclipper::load(&f);
+  demand::load(&f);
   wire::load(&f);
 
-  f.read(&g_cost_per_box);
-  f.read(&g_demand);
   f.read(&g_paperclips);
   f.read(&g_funds);
 }
@@ -107,10 +104,9 @@ static void load() {
 static void save() {
   auto f = savefile::save();
   autoclipper::save(&f);
+  demand::save(&f);
   wire::save(&f);
 
-  f.write(&g_cost_per_box);
-  f.write(&g_demand);
   f.write(&g_paperclips);
   f.write(&g_funds);
 }

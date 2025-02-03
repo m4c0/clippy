@@ -6,6 +6,8 @@ export namespace demand {
   unsigned avg_cps();
   unsigned public_demand();
   unsigned price();
+  void price_down();
+  void price_up();
 
   void load(savefile * f);
   void save(savefile * f);
@@ -25,6 +27,9 @@ static float pd() {
 unsigned demand::price() { return g.cost_per_box; }
 
 unsigned demand::public_demand() { return pd() * 10; }
+
+void demand::price_down() { if (g.cost_per_box > 0) g.cost_per_box--; }
+void demand::price_up() { g.cost_per_box++; }
 
 unsigned demand::avg_cps() {
   // min(1, PD/100) * 7 * PD^1.15

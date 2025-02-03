@@ -63,6 +63,8 @@ static void input() {
     case 'p': make_paperclip(); break;
     case 'w': buy_spool(); break;
     case 'q': throw quit {};
+    case '+': demand::price_up(); break;
+    case '-': demand::price_down(); break;
     default:  break;
   }
 }
@@ -85,6 +87,7 @@ static void draw() {
   if (autoclipper::enabled()) putln("* Autoclipper:   ", autoclipper::cost());
   putln();
   putln("Press Q to quit");
+  putln("Press +/- to change price");
   if (wire::stock()) putln("Press P to create a paperclip");
   if (g_funds >= wire::cost()) putln("Press W to buy a wire spool");
   if (autoclipper::can_buy(g_funds)) putln("Press A to buy an autoclipper");

@@ -32,9 +32,10 @@ numba wire::stock() { return g.wire; }
 void wire::cut(numba n) { g.wire -= n; }
 
 numba wire::cost() {
-  numba increase = price_ampliture * (dotz::cos(g.cost_ticker) * -0.5 + 0.5);
-  increase -= increase % 100;
-  return g.cost_per_spool + increase;
+  numba cost = g.cost_per_spool;
+  cost = cost + price_ampliture * (dotz::cos(g.cost_ticker) * -0.5 + 0.5);
+  cost -= cost % 100;
+  return cost;
 }
 
 void wire::update_cost() {

@@ -4,6 +4,7 @@ import save;
 
 export namespace demand {
   unsigned avg_cps();
+  unsigned mkt_level();
   unsigned public_demand();
   unsigned price();
   void price_down();
@@ -17,13 +18,15 @@ module :private;
 
 static struct {
   unsigned cost_per_box = 25;
+  unsigned mkt_level = 0;
 } g;
 
 static float pd() {
   // (1 + 0.1 * U) * (1.1^M) * Bonuses * (0.8 / P).
-  return 100.0 * 0.8 / demand::price();
+  return 100.0 * dotz::pow(1.1, g.mkt_level) * 0.8 / demand::price();
 }
 
+unsigned demand::mkt_level() { return g.mkt_level + 1; }
 unsigned demand::price() { return g.cost_per_box; }
 
 unsigned demand::public_demand() { return pd() * 10; }

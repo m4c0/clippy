@@ -29,6 +29,7 @@ static float pd() {
   // (1 + 0.1 * U) * (1.1^M) * Bonuses * (0.8 / P).
   return 100.0 * dotz::pow(1.1, g.mkt_level) * 0.8 / demand::price();
 }
+static float batch() { return 0.7 * dotz::pow(pd(), 1.15); }
 
 unsigned demand::mkt_cost() { return g.mkt_cost; }
 unsigned demand::mkt_level() { return g.mkt_level + 1; }
@@ -46,13 +47,9 @@ void demand::upgrade_mkt() {
 
 unsigned demand::avg_cps() {
   // min(1, PD/100) * 7 * PD^1.15
-  float pd = ::pd();
-  return dotz::round(dotz::min(1.0, pd / 100.0) * 7.0 * dotz::pow(pd, 1.15));
+  return dotz::round(dotz::min(1.0, pd() / 100.0) * 10.0 * batch());
 }
-unsigned demand::box_size() {
-  float pd = ::pd();
-  return dotz::floor(0.7 * dotz::pow(pd, 1.15));
-}
+unsigned demand::box_size() { return batch(); }
 
 void demand::load(savefile * f) { f->read(&g);  }
 void demand::save(savefile * f) { f->write(&g); }

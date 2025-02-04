@@ -64,6 +64,7 @@ static void input() {
     case 'w': buy_spool(); break;
     case 'q': throw quit {};
     case '+': demand::price_up(); break;
+    case '=': demand::price_up(); break;
     case '-': demand::price_down(); break;
     default:  break;
   }

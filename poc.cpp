@@ -29,19 +29,15 @@ static void sell() {
   autoclipper::check(g.funds);
 }
 
-static void autoclip() {
-  auto n = dotz::min(wire::stock(), autoclipper::count());
+static void make_clips(unsigned n) {
+  n = dotz::min(wire::stock(), n);
   wire::cut(n);
   g.paperclips += n;
   g.inventory += n;
 }
 
-static void make_paperclip() {
-  if (wire::stock() == 0) return;
-  wire::cut(1);
-  g.paperclips++;
-  g.inventory++;
-}
+static void autoclip() { make_clips(autoclipper::count()); }
+static void make_paperclip() { make_clips(1); }
 
 static void buy_spool() {
   auto cost = wire::cost();

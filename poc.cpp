@@ -12,15 +12,15 @@ import wire;
 
 struct quit {};
 
-static numba g_paperclips = 0;
+static numba g_inventory = 0;
 static numba g_funds = 0;
 
 static void sell() {
-  if (g_paperclips == 0) return;
+  if (g_inventory == 0) return;
   if (rng::rand(100) > demand::public_demand()) return;
 
-  auto n = dotz::min(g_paperclips, demand::box_size());
-  g_paperclips -= n;
+  auto n = dotz::min(g_inventory, demand::box_size());
+  g_inventory -= n;
   g_funds += n * demand::price();
 
   autoclipper::check(g_funds);
@@ -29,13 +29,13 @@ static void sell() {
 static void autoclip() {
   auto n = dotz::min(wire::stock(), autoclipper::count());
   wire::cut(n);
-  g_paperclips += n;
+  g_inventory += n;
 }
 
 static void make_paperclip() {
   if (wire::stock() == 0) return;
   wire::cut(1);
-  g_paperclips++;
+  g_inventory++;
 }
 
 static void buy_spool() {
@@ -74,7 +74,7 @@ static void draw() {
   putln("\e[1J\e[H");
   log_print();
   putln();
-  putln("Paperclips:      ", g_paperclips);
+  putln("Inventory:       ", g_inventory);
   putln("Wire:            ", wire::stock(), " units");
   putln("Funds:           ", g_funds, " dindins");
   putln("Public demand:   ", demand::public_demand(), "%");
@@ -102,7 +102,7 @@ static void load() {
   demand::load(&f);
   wire::load(&f);
 
-  f.read(&g_paperclips);
+  f.read(&g_inventory);
   f.read(&g_funds);
 }
 
@@ -112,7 +112,7 @@ static void save() {
   demand::save(&f);
   wire::save(&f);
 
-  f.write(&g_paperclips);
+  f.write(&g_inventory);
   f.write(&g_funds);
 }
 

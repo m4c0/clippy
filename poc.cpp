@@ -81,7 +81,7 @@ static void draw() {
   putln("Wire:            ", wire::stock(), " units");
   putln("Funds:           ", g.funds, " dindins");
   putln("Public demand:   ", demand::public_demand(), "%");
-  putln("Avg clips/s:     ", demand::avg_cps());
+  // putln("Avg clips/s:     ", demand::avg_cps());
   if (autoclipper::enabled()) putln("Autoclippers:    ", autoclipper::count());
   putln("Marketing level: ", demand::mkt_level());
   putln();

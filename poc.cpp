@@ -8,6 +8,7 @@ import numba;
 import print;
 import rng;
 import save;
+import trust;
 import wire;
 
 struct quit {};
@@ -92,6 +93,10 @@ static void draw() {
   if (autoclipper::enabled()) putln("* Autoclipper:   ", autoclipper::cost());
   putln("* Mkt upgrade:   ", demand::mkt_cost());
   putln();
+  if (trust::enabled(g.paperclips)) {
+    putln("Trust level:     ", trust::level());
+    putln();
+  }
   putln("Press Q to quit");
   putln("Press +/- to change price");
   if (wire::stock()) putln("Press P to create a paperclip");

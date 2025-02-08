@@ -5,7 +5,8 @@ import save;
 
 export namespace trust {
   unsigned level();
-  bool enabled(numba clips);
+  bool enabled();
+  void update(numba clips);
   void load(savefile * f);
   void save(savefile * f);
 };
@@ -13,16 +14,26 @@ export namespace trust {
 module :private;
 
 static struct {
-  unsigned level;
+  unsigned level {};
+  unsigned limit_prev = 1000;
+  unsigned limit_curr = 2000;
 } g;
 
-bool trust::enabled(numba clips) {
-  if (clips < 2000) return false;
+bool trust::enabled() { return g.level != 0; }
+
+void trust::update(numba clips) {
+  if (clips < g.limit_curr) return;
+
   if (g.level == 0) {
     log("Trust-Constrained Self-Modification enabled");
     g.level = 2;
+  } else {
+    g.level++;
   }
-  return true;
+
+  auto n = g.limit_prev + g.limit_curr;
+  g.limit_prev = g.limit_curr;
+  g.limit_curr = n;
 }
 unsigned trust::level() {
   return g.level;

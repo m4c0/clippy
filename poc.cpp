@@ -57,6 +57,7 @@ static void tick() {
   sell();
   autoclip();
   wire::update_cost();
+  trust::update(g.paperclips);
 }
 
 static void input() {
@@ -93,7 +94,7 @@ static void draw() {
   if (autoclipper::enabled()) putln("* Autoclipper:   ", autoclipper::cost());
   putln("* Mkt upgrade:   ", demand::mkt_cost());
   putln();
-  if (trust::enabled(g.paperclips)) {
+  if (trust::enabled()) {
     putln("Trust level:     ", trust::level());
     putln();
   }
@@ -113,6 +114,7 @@ static void load() {
 }
 
 static void save() {
+  // TODO: save logs
   auto f = savefile::save();
   autoclipper::save(&f);
   demand::save(&f);

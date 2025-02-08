@@ -96,6 +96,8 @@ static void draw() {
   putln();
   if (trust::enabled()) {
     putln("Trust level:     ", trust::level());
+    putln("Processors:      ", trust::processors());
+    putln("Memory:          ", trust::memory());
     putln();
   }
   putln("Press Q to quit");

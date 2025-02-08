@@ -4,8 +4,12 @@ import numba;
 import save;
 
 export namespace trust {
-  unsigned level();
   bool enabled();
+
+  unsigned level();
+  unsigned processors();
+  unsigned memory();
+
   void update(numba clips);
   void load(savefile * f);
   void save(savefile * f);
@@ -17,6 +21,8 @@ static struct {
   unsigned level {};
   unsigned limit_prev = 1000;
   unsigned limit_curr = 2000;
+  unsigned processors {};
+  unsigned memory {};
 } g;
 
 bool trust::enabled() { return g.level != 0; }
@@ -35,9 +41,9 @@ void trust::update(numba clips) {
   g.limit_prev = g.limit_curr;
   g.limit_curr = n;
 }
-unsigned trust::level() {
-  return g.level;
-}
+unsigned trust::level() { return g.level; }
+unsigned trust::processors() { return g.processors; }
+unsigned trust::memory() { return g.memory; }
 
 void trust::load(savefile * f) { f->read(&g); }
 void trust::save(savefile * f) { f->write(&g); }

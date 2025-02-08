@@ -112,6 +112,7 @@ static void load() {
   autoclipper::load(&f);
   demand::load(&f);
   wire::load(&f);
+  trust::load(&f);
   f.read(&g);
 }
 
@@ -121,6 +122,7 @@ static void save() {
   autoclipper::save(&f);
   demand::save(&f);
   wire::save(&f);
+  trust::save(&f);
   f.write(&g);
 }
 

@@ -5,6 +5,8 @@ export module save;
 import no;
 import sysstd;
 
+static constexpr const auto chunk_size = 256;
+
 export class savefile : no::no {
   FILE * m_file;
 
@@ -15,16 +17,16 @@ public:
 
   template<typename T>
   void read(T * t) {
-    union { char b[64]; T t {}; } u;
-    static_assert(sizeof(u) == 64);
+    union { char b[chunk_size]; T t {}; } u;
+    static_assert(sizeof(u) == chunk_size);
     if (m_file) fread(&u, 1, sizeof(u), m_file); 
     *t = u.t;
   }
 
   template<typename T>
   void write(T * t) {
-    union { char b[64]; T t {}; } u;
-    static_assert(sizeof(u) == 64);
+    union { char b[chunk_size]; T t {}; } u;
+    static_assert(sizeof(u) == chunk_size);
     u.t = *t;
     fwrite(&u, 1, sizeof(u), m_file); 
   }

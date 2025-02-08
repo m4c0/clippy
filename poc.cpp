@@ -109,21 +109,21 @@ static void draw() {
 
 static void load() {
   auto f = savefile::load();
+  f.read(&g);
   autoclipper::load(&f);
   demand::load(&f);
   wire::load(&f);
   trust::load(&f);
-  f.read(&g);
 }
 
 static void save() {
   // TODO: save logs
   auto f = savefile::save();
+  f.write(&g);
   autoclipper::save(&f);
   demand::save(&f);
   wire::save(&f);
   trust::save(&f);
-  f.write(&g);
 }
 
 static void cycle() {
